@@ -51,7 +51,22 @@ def pregunta_02():
     ]
 
     """
-    return
+
+    import string
+    Columna1 = [z[0] for z in Datos()[0:]]
+
+    Contador_de_letras = {letra:0 for letra in string.ascii_lowercase}
+
+    for lista in Columna1:
+        for elemento in lista:
+            if elemento.isalpha():
+                letra = elemento.lower()
+                Contador_de_letras[letra] +=1
+
+    lista_tuplas = sorted(Contador_de_letras.items())
+    lista_tuplas_filtrada =[tupla for tupla in lista_tuplas if not 0 in tupla]
+    lista_tuplas_mayuscula = list(map(lambda tupla: (tupla[0].upper() if isinstance(tupla[0], str) else tupla[0], tupla[1]), lista_tuplas_filtrada))
+    return lista_tuplas_mayuscula
 
 
 def pregunta_03():
@@ -69,7 +84,23 @@ def pregunta_03():
     ]
 
     """
-    return
+    Tabla1 = sorted([z[:2] for z in Datos()])
+    Columna1 = [z[0] for z in Datos()[0:]]
+    Grupos = sorted(list(set(Columna1)))
+
+    Suma = 0
+    ListaSuma = []
+
+    for i in Grupos:
+        Suma = 0
+        for j in Tabla1:    
+            if i[0] == j[0]:
+                Suma += int(j[1])
+        ListaSuma.append(Suma)
+    Lista_Tuplas = sorted(list(zip(Grupos, ListaSuma)))
+
+
+    return Lista_Tuplas
 
 
 def pregunta_04():
