@@ -125,6 +125,19 @@ def pregunta_04():
     ]
 
     """
+    #Ejercicio 4
+    Columna3 = [z[2] for z in Datos()[0:]]
+    Campos_Fechas = [z.split("-") for z in Columna3]
+    Columna_Mes = [z[1] for z in Campos_Fechas]
+
+    Grupos = list(set(Columna_Mes))
+    Lista_Conteo = []
+
+    for i in Grupos:
+        Conteo = Columna_Mes.count(i)
+        Lista_Conteo.append(Conteo)
+    Lista_Tuplas = sorted(list(zip(Grupos, Lista_Conteo)))
+    Lista_Tuplas
     return
 
 
@@ -143,7 +156,21 @@ def pregunta_05():
     ]
 
     """
-    return
+    x = open('data.csv', 'r').readlines()
+    x = [i.replace('\n', '') for i in x]
+    x = [i.split('\t') for i in x]
+
+    diccionario = {}
+    for i in x:
+        if i[0] in diccionario.keys():
+            diccionario[i[0]].append(int(i[1]))
+        else:
+            diccionario[i[0]] = [int(i[1])]
+
+    resultado = [(a,max(diccionario[a]),min(diccionario[a])) for a in diccionario.keys()]
+    resultado = sorted(resultado, key=lambda tup: tup[0])
+
+    return resultado
 
 
 def pregunta_06():
@@ -168,7 +195,27 @@ def pregunta_06():
     ]
 
     """
-    return
+    x = open('data.csv', 'r').readlines()
+    x = [i.replace('\n', '') for i in x]
+    x = [i.split('\t') for i in x]
+    
+    lista = []
+    for a in [i[4].split(',') for i in x]:
+        lista.extend(a)
+        diccionario = {}
+        for b in lista:
+            clave = b.split(':')[0]
+            valor = b.split(':')[1]
+            if clave in diccionario.keys():
+                diccionario[clave].append(int(valor))
+            else:
+                diccionario[clave] = [int(valor)]
+    
+    resultado = [(clave, min(diccionario[clave]), max(diccionario[clave])) for clave in diccionario.keys()]
+    sorted(resultado, key=lambda tup: tup[0])
+
+    return sorted(resultado, key=lambda tup: tup[0])
+
 
 
 def pregunta_07():
