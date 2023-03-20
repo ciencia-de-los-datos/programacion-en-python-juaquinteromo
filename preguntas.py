@@ -137,8 +137,8 @@ def pregunta_04():
         Conteo = Columna_Mes.count(i)
         Lista_Conteo.append(Conteo)
     Lista_Tuplas = sorted(list(zip(Grupos, Lista_Conteo)))
-    Lista_Tuplas
-    return
+    
+    return Lista_Tuplas
 
 
 def pregunta_05():
