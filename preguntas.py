@@ -8,9 +8,15 @@ No puede utilizar pandas, numpy o scipy. Se debe utilizar solo las funciones de 
 básicas.
 
 Utilice el archivo `data.csv` para resolver las preguntas.
-
-
 """
+def Datos():
+    Data = open('data.csv', 'r').readlines()
+    Data = [z.replace("\n", "") for z in Data]# se remplaza el salto de linea por vacío ""
+    Data = [z.split("\t") for z in Data]#se divine la cadena en cada tab ("\t")
+    return Data
+
+Datos()
+
 
 
 def pregunta_01():
@@ -21,7 +27,13 @@ def pregunta_01():
     214
 
     """
-    return
+    Columna2 = [z[1] for z in Datos()[0:]]
+
+    Suma = 0
+    for i in Columna2:
+        Suma += int(i)
+    
+    return Suma
 
 
 def pregunta_02():
