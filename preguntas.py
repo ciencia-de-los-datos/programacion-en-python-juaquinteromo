@@ -8,9 +8,15 @@ No puede utilizar pandas, numpy o scipy. Se debe utilizar solo las funciones de 
 básicas.
 
 Utilice el archivo `data.csv` para resolver las preguntas.
-
-
 """
+def Datos():
+    Data = open('data.csv', 'r').readlines()
+    Data = [z.replace("\n", "") for z in Data]# se remplaza el salto de linea por vacío ""
+    Data = [z.split("\t") for z in Data]#se divine la cadena en cada tab ("\t")
+    return Data
+
+Datos()
+
 
 
 def pregunta_01():
@@ -21,7 +27,13 @@ def pregunta_01():
     214
 
     """
-    return
+    Columna2 = [z[1] for z in Datos()[0:]]
+
+    Suma = 0
+    for i in Columna2:
+        Suma += int(i)
+    
+    return Suma
 
 
 def pregunta_02():
@@ -39,7 +51,22 @@ def pregunta_02():
     ]
 
     """
-    return
+
+    import string
+    Columna1 = [z[0] for z in Datos()[0:]]
+
+    Contador_de_letras = {letra:0 for letra in string.ascii_lowercase}
+
+    for lista in Columna1:
+        for elemento in lista:
+            if elemento.isalpha():
+                letra = elemento.lower()
+                Contador_de_letras[letra] +=1
+
+    lista_tuplas = sorted(Contador_de_letras.items())
+    lista_tuplas_filtrada =[tupla for tupla in lista_tuplas if not 0 in tupla]
+    lista_tuplas_mayuscula = list(map(lambda tupla: (tupla[0].upper() if isinstance(tupla[0], str) else tupla[0], tupla[1]), lista_tuplas_filtrada))
+    return lista_tuplas_mayuscula
 
 
 def pregunta_03():
@@ -57,7 +84,23 @@ def pregunta_03():
     ]
 
     """
-    return
+    Tabla1 = sorted([z[:2] for z in Datos()])
+    Columna1 = [z[0] for z in Datos()[0:]]
+    Grupos = sorted(list(set(Columna1)))
+
+    Suma = 0
+    ListaSuma = []
+
+    for i in Grupos:
+        Suma = 0
+        for j in Tabla1:    
+            if i[0] == j[0]:
+                Suma += int(j[1])
+        ListaSuma.append(Suma)
+    Lista_Tuplas = sorted(list(zip(Grupos, ListaSuma)))
+
+
+    return Lista_Tuplas
 
 
 def pregunta_04():
@@ -82,7 +125,20 @@ def pregunta_04():
     ]
 
     """
-    return
+    #Ejercicio 4
+    Columna3 = [z[2] for z in Datos()[0:]]
+    Campos_Fechas = [z.split("-") for z in Columna3]
+    Columna_Mes = [z[1] for z in Campos_Fechas]
+
+    Grupos = list(set(Columna_Mes))
+    Lista_Conteo = []
+
+    for i in Grupos:
+        Conteo = Columna_Mes.count(i)
+        Lista_Conteo.append(Conteo)
+    Lista_Tuplas = sorted(list(zip(Grupos, Lista_Conteo)))
+    
+    return Lista_Tuplas
 
 
 def pregunta_05():
@@ -100,7 +156,17 @@ def pregunta_05():
     ]
 
     """
-    return
+    diccionario = {}
+    for i in Datos():
+        if i[0] in diccionario.keys():
+            diccionario[i[0]].append(int(i[1]))
+        else:
+            diccionario[i[0]] = [int(i[1])]
+
+    resultado = [(a,max(diccionario[a]),min(diccionario[a])) for a in diccionario.keys()]
+    resultado = sorted(resultado, key=lambda tup: tup[0])
+
+    return resultado
 
 
 def pregunta_06():
@@ -124,8 +190,24 @@ def pregunta_06():
         ("jjj", 5, 17),
     ]
 
-    """
-    return
+    """    
+    lista = []
+    for a in [i[4].split(',') for i in Datos()]:
+        lista.extend(a)
+        diccionario = {}
+        for b in lista:
+            clave = b.split(':')[0]
+            valor = b.split(':')[1]
+            if clave in diccionario.keys():
+                diccionario[clave].append(int(valor))
+            else:
+                diccionario[clave] = [int(valor)]
+    
+    resultado = [(clave, min(diccionario[clave]), max(diccionario[clave])) for clave in diccionario.keys()]
+    sorted(resultado, key=lambda tup: tup[0])
+
+    return sorted(resultado, key=lambda tup: tup[0])
+
 
 
 def pregunta_07():
@@ -148,8 +230,18 @@ def pregunta_07():
         (9, ["A", "B", "E", "A", "A", "C"]),
     ]
 
-    """
-    return
+    """  
+    diccionario = {}
+    for i in Datos():
+        clave = int(i[1]) 
+        if clave in diccionario.keys():
+            diccionario[clave].append(i[0])
+        else:
+            diccionario[clave] = [i[0]]
+
+    lista = list(diccionario.items())
+    
+    return sorted(lista, key=lambda tup: tup[0])
 
 
 def pregunta_08():
@@ -173,8 +265,19 @@ def pregunta_08():
         (9, ["A", "B", "C", "E"]),
     ]
 
-    """
-    return
+    """ 
+    diccionario = {}
+    for i in Datos():
+        clave = int(i[1])
+        if clave in diccionario.keys():
+            diccionario[clave].append(i[0])
+        else: 
+            diccionario[clave] = [i[0]]
+    
+    resultado = sorted(list(diccionario.items()))
+    resultado = [(b[0], sorted(list(set(b[1])))) for b in resultado]
+    
+    return resultado
 
 
 def pregunta_09():
@@ -197,7 +300,24 @@ def pregunta_09():
     }
 
     """
-    return
+    lista = []
+
+    for a in [i[4].split(',') for i in Datos()]:
+        lista.extend(a)
+
+    diccionario = {}
+
+    for b in sorted(lista):
+        clave = b.split(':')[0]
+        valor = b.split(':')[1]
+        if clave in diccionario.keys():
+            diccionario[clave] = diccionario[clave] + 1
+        else:
+            diccionario[clave] = 1
+
+    resultado = dict(list(diccionario.items()))
+
+    return resultado
 
 
 def pregunta_10():
@@ -218,7 +338,11 @@ def pregunta_10():
 
 
     """
-    return
+    lista = []
+    for i in Datos():
+        lista.append((i[0], len(i[3].split(',')),len(i[4].split(','))))
+
+    return lista
 
 
 def pregunta_11():
@@ -239,7 +363,18 @@ def pregunta_11():
 
 
     """
-    return
+    diccionario = {}
+    for i in Datos():
+        for a in i[3].split(','):
+            if a in diccionario.keys():
+               diccionario[a] = diccionario[a] + int(i[1])
+            else:
+                diccionario[a] = int(i[1])
+    
+    resultado = list(diccionario.items())
+
+    return dict(sorted(resultado, key=lambda tup: tup[0]))
+    
 
 
 def pregunta_12():
@@ -257,4 +392,14 @@ def pregunta_12():
     }
 
     """
-    return
+    diccionario = {}
+    for i in Datos():
+        c = i[4].split(',')
+        if i[0] in diccionario.keys():
+            diccionario[i[0]] = diccionario[i[0]] + sum([int(e.split(':')[1]) for e in c])
+        else:
+            diccionario[i[0]] = sum([int(e.split(':')[1]) for e in c])
+    resultado = list(diccionario.items())
+    resultado = dict(sorted(resultado, key=lambda tup: tup[0]))
+    return resultado
+    
