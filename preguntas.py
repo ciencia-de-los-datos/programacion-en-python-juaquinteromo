@@ -156,12 +156,8 @@ def pregunta_05():
     ]
 
     """
-    x = open('data.csv', 'r').readlines()
-    x = [i.replace('\n', '') for i in x]
-    x = [i.split('\t') for i in x]
-
     diccionario = {}
-    for i in x:
+    for i in Datos():
         if i[0] in diccionario.keys():
             diccionario[i[0]].append(int(i[1]))
         else:
@@ -194,13 +190,9 @@ def pregunta_06():
         ("jjj", 5, 17),
     ]
 
-    """
-    x = open('data.csv', 'r').readlines()
-    x = [i.replace('\n', '') for i in x]
-    x = [i.split('\t') for i in x]
-    
+    """    
     lista = []
-    for a in [i[4].split(',') for i in x]:
+    for a in [i[4].split(',') for i in Datos()]:
         lista.extend(a)
         diccionario = {}
         for b in lista:
@@ -238,13 +230,9 @@ def pregunta_07():
         (9, ["A", "B", "E", "A", "A", "C"]),
     ]
 
-    """
-    x = open('data.csv', 'r').readlines()
-    x = [i.replace('\n', '') for i in x]
-    x = [i.split('\t') for i in x]
-    
+    """  
     diccionario = {}
-    for i in x:
+    for i in Datos():
         clave = int(i[1]) 
         if clave in diccionario.keys():
             diccionario[clave].append(i[0])
@@ -254,7 +242,6 @@ def pregunta_07():
     lista = list(diccionario.items())
     
     return sorted(lista, key=lambda tup: tup[0])
-    return
 
 
 def pregunta_08():
@@ -313,7 +300,24 @@ def pregunta_09():
     }
 
     """
-    return
+    lista = []
+
+    for a in [i[4].split(',') for i in Datos()]:
+        lista.extend(a)
+
+    diccionario = {}
+
+    for b in sorted(lista):
+        clave = b.split(':')[0]
+        valor = b.split(':')[1]
+        if clave in diccionario.keys():
+            diccionario[clave] = diccionario[clave] + 1
+        else:
+            diccionario[clave] = 1
+
+    resultado = dict(list(diccionario.items()))
+
+    return resultado
 
 
 def pregunta_10():
@@ -334,7 +338,11 @@ def pregunta_10():
 
 
     """
-    return
+    lista = []
+    for i in Datos():
+        lista.append((i[0], len(i[3].split(',')),len(i[4].split(','))))
+
+    return lista
 
 
 def pregunta_11():
@@ -355,7 +363,18 @@ def pregunta_11():
 
 
     """
-    return
+    diccionario = {}
+    for i in Datos():
+        for a in i[3].split(','):
+            if a in diccionario.keys():
+               diccionario[a] = diccionario[a] + int(i[1])
+            else:
+                diccionario[a] = int(i[1])
+    
+    resultado = list(diccionario.items())
+
+    return dict(sorted(resultado, key=lambda tup: tup[0]))
+    
 
 
 def pregunta_12():
@@ -373,4 +392,14 @@ def pregunta_12():
     }
 
     """
-    return
+    diccionario = {}
+    for i in Datos():
+        c = i[4].split(',')
+        if i[0] in diccionario.keys():
+            diccionario[i[0]] = diccionario[i[0]] + sum([int(e.split(':')[1]) for e in c])
+        else:
+            diccionario[i[0]] = sum([int(e.split(':')[1]) for e in c])
+    resultado = list(diccionario.items())
+    resultado = dict(sorted(resultado, key=lambda tup: tup[0]))
+    return resultado
+    
